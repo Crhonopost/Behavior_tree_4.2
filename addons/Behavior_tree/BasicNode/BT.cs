@@ -32,23 +32,24 @@ public partial class BT: BehaviourTree
 
     public override void _Ready()
     {
+        var unknownA = GetNode(agentPath);
 
-        if(GetNode(agentPath).GetType().IsAssignableFrom(typeof(IAgent))){
-            agent = GetNode<IAgent>(agentPath);
+        if(unknownA is IAgent a){
+            agent = a;
             isActive = true;
+            root = GetChild<BTNode>(0);
+            blackboard = new BTBlackboard();
         }
-
-        root = GetChild<BTNode>(0);
-        blackboard = new BTBlackboard();
+        else{
+            throw new Exception("The agent node does not implement IAgent interface");
+        }
     }
 
     public override void _PhysicsProcess(double delta)
     {
         if(isActive){
             root.PreTick(agent, blackboard);
-            if(root.Tick(agent, blackboard) != BTState.RUNNING){
-                isActive = false;
-            };
+            root.Tick(agent, blackboard);
             root.PostTick(agent, blackboard);
         }
     }

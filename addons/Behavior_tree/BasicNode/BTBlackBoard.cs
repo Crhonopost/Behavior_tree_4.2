@@ -4,14 +4,17 @@ namespace BehaviorTree;
 
 public partial class BTBlackboard
 {
-    [Export]
-    private Godot.Collections.Dictionary data;
+    private Godot.Collections.Dictionary<string, Variant> data;
+
+    public BTBlackboard(){
+        data = new Godot.Collections.Dictionary<string, Variant>();
+    }
 
     public void setValue(Variant value, string key){
         data[key] = value;
     }
 
-    public object getValue(string key){
+    public Variant getValue(string key){
         return data[key];
     }
 

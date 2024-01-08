@@ -1,3 +1,29 @@
-[gd_scene format=3 uid="uid://c4wp48jp2b268"]
+[gd_scene load_steps=7 format=3 uid="uid://c4wp48jp2b268"]
+
+[ext_resource type="Texture2D" uid="uid://cibn47wikwgw5" path="res://icon.svg" id="1_k7ofh"]
+[ext_resource type="Script" path="res://addons/Behavior_tree/BasicNode/BT.cs" id="2_736a0"]
+[ext_resource type="Script" path="res://scripts/Agent.cs" id="2_qa8k5"]
+[ext_resource type="Script" path="res://scripts/actions/GoToTarget.cs" id="4_0p0na"]
+[ext_resource type="Script" path="res://addons/Behavior_tree/Composites/BTSequence.cs" id="4_nx7gx"]
+[ext_resource type="Script" path="res://scripts/actions/SetMousePositionTarget.cs" id="5_ilqu3"]
 
 [node name="test" type="Node2D"]
+
+[node name="Agent" type="Sprite2D" parent="."]
+position = Vector2(-32.5, 35)
+scale = Vector2(0.492188, 0.453125)
+texture = ExtResource("1_k7ofh")
+script = ExtResource("2_qa8k5")
+
+[node name="BT" type="Node" parent="."]
+script = ExtResource("2_736a0")
+agentPath = NodePath("../Agent")
+
+[node name="BTSequence" type="Node" parent="BT"]
+script = ExtResource("4_nx7gx")
+
+[node name="SetMousePosition" type="Node" parent="BT/BTSequence"]
+script = ExtResource("5_ilqu3")
+
+[node name="GoToTarget" type="Node" parent="BT/BTSequence"]
+script = ExtResource("4_0p0na")

@@ -21,7 +21,7 @@ se renseigner sur les stacks
 namespace BehaviorTree;
 
 [GlobalClass]
-public partial class BTNode: BehaviourTree
+public abstract partial class BTNode: BehaviourTree
 {
     public virtual void PreTick(IAgent agent, BTBlackboard blackboard){} // appellée avant Tick() 
     public virtual BTState Tick(IAgent agent, BTBlackboard blackboard){ // manque le blackboard
