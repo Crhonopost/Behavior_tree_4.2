@@ -1,8 +1,6 @@
 using BehaviorTree;
-using Godot;
-using System;
 
-public partial class SetMousePositionTarget : BehaviorTree.BTLeaf
+public partial class SetMousePositionTarget : BTLeaf
 {
     public override BTState Tick(IAgent agent, BTBlackboard blackboard)
     {

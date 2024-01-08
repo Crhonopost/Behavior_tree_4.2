@@ -3,7 +3,7 @@ using System;
 
 namespace BehaviorTree;
 
-[GlobalClass]
+[GlobalClass, Icon("res://addons/Behavior_tree/Icons/BT.png")]
 public partial class BT: BehaviourTree
 // manque un truc pour réinitialiser l'etat de l'arbre sans que ca rame 
 {

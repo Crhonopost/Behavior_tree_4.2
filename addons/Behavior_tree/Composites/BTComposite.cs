@@ -2,7 +2,7 @@ using Godot;
 
 namespace BehaviorTree;
 
-[GlobalClass]
+[GlobalClass, Icon("res://addons/Behavior_tree/Icons/BTComposite.png")]
 public partial class BTComposite : BTNode
 {
     private Godot.Collections.Array<BTNode> childs;

@@ -2,7 +2,7 @@ using Godot;
 
 namespace BehaviorTree.Decorator;
 
-[GlobalClass]
+[GlobalClass, Icon("res://addons/Behavior_tree/Icons/BTDecorator.png")]
 public partial class BTDecorator : BTNode
 {
     protected BTNode child;

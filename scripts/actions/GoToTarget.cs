@@ -1,9 +1,8 @@
 using BehaviorTree;
 using Godot;
-using System;
 using System.Collections.Generic;
 
-public partial class GoToTarget : BehaviorTree.BTLeaf
+public partial class GoToTarget : BTLeaf
 {
     public override BTState Tick(IAgent agent, BTBlackboard blackboard)
     {

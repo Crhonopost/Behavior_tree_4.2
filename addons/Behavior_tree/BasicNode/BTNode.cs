@@ -20,7 +20,7 @@ se renseigner sur les stacks
 
 namespace BehaviorTree;
 
-[GlobalClass]
+[GlobalClass, Icon("res://addons/Behavior_tree/Icons/BTNode.png")]
 public abstract partial class BTNode: BehaviourTree
 {
     public virtual void PreTick(IAgent agent, BTBlackboard blackboard){} // appellée avant Tick() 

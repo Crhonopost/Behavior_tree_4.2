@@ -2,7 +2,7 @@ using Godot;
 
 namespace BehaviorTree;
 
-[GlobalClass]
+[GlobalClass, Icon("res://addons/Behavior_tree/Icons/BTSequence.png")]
 public partial class BTSequence : BTComposite{
 
     public override void _Ready()
