@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using BehaviorTree;
 using Godot;
 
-public partial class Agent : Sprite2D, IAgent
+public partial class Agent : CharacterBody2D, IAgent
 {
 	private Vector2 target;
 	private int speed = 400;

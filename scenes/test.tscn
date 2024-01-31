@@ -1,29 +1,56 @@
-[gd_scene load_steps=7 format=3 uid="uid://c4wp48jp2b268"]
+[gd_scene load_steps=10 format=3 uid="uid://c4wp48jp2b268"]
 
 [ext_resource type="Texture2D" uid="uid://cibn47wikwgw5" path="res://icon.svg" id="1_k7ofh"]
 [ext_resource type="Script" path="res://addons/Behavior_tree/BasicNode/BT.cs" id="2_736a0"]
 [ext_resource type="Script" path="res://scripts/Agent.cs" id="2_qa8k5"]
+[ext_resource type="Script" path="res://addons/Behavior_tree/Decorators/BTRepeater.cs" id="3_7qp86"]
 [ext_resource type="Script" path="res://scripts/actions/GoToTarget.cs" id="4_0p0na"]
 [ext_resource type="Script" path="res://addons/Behavior_tree/Composites/BTSequence.cs" id="4_nx7gx"]
-[ext_resource type="Script" path="res://scripts/actions/SetMousePositionTarget.cs" id="5_ilqu3"]
+[ext_resource type="Script" path="res://scripts/actions/LoadMousePositionTarget.cs" id="5_ilqu3"]
+[ext_resource type="Script" path="res://scripts/actions/UpdateMousePosition.cs" id="6_fsclf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xgmpv"]
+size = Vector2(64, 58)
 
 [node name="test" type="Node2D"]
 
-[node name="Agent" type="Sprite2D" parent="."]
-position = Vector2(-32.5, 35)
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+script = ExtResource("2_qa8k5")
+
+[node name="Agent" type="Sprite2D" parent="CharacterBody2D"]
 scale = Vector2(0.492188, 0.453125)
 texture = ExtResource("1_k7ofh")
-script = ExtResource("2_qa8k5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_xgmpv")
+
+[node name="Shelter" type="Node2D" parent="." groups=["shelter"]]
+position = Vector2(532, 211)
+
+[node name="ColorRect" type="ColorRect" parent="Shelter"]
+offset_left = -19.0
+offset_top = -19.0
+offset_right = 21.0
+offset_bottom = 21.0
+metadata/_edit_lock_ = true
 
 [node name="BT" type="Node" parent="."]
 script = ExtResource("2_736a0")
-agentPath = NodePath("../Agent")
+agentPath = NodePath("../CharacterBody2D")
 
-[node name="BTSequence" type="Node" parent="BT"]
+[node name="BTRepeater" type="Node" parent="BT"]
+script = ExtResource("3_7qp86")
+
+[node name="FollowMouse" type="Node" parent="BT/BTRepeater"]
 script = ExtResource("4_nx7gx")
 
-[node name="SetMousePosition" type="Node" parent="BT/BTSequence"]
+[node name="UpdateMousePosition" type="Node" parent="BT/BTRepeater/FollowMouse"]
+script = ExtResource("6_fsclf")
+mouseKey = "mouse"
+
+[node name="LoadMousePosition" type="Node" parent="BT/BTRepeater/FollowMouse"]
 script = ExtResource("5_ilqu3")
 
-[node name="GoToTarget" type="Node" parent="BT/BTSequence"]
+[node name="GoToTarget" type="Node" parent="BT/BTRepeater/FollowMouse"]
 script = ExtResource("4_0p0na")
+targetKey = "target"
