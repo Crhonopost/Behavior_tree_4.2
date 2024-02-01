@@ -11,18 +11,18 @@ public partial class BTSequence : BTComposite{
         reset();
     }
 
-    public override void PreTick(IAgent agent, BTBlackboard blackboard)
+    public override void PreTick(Node agent, BTBlackboard blackboard)
     {
         CurrentChild.PreTick(agent, blackboard);
     }
 
 
-    public override void PostTick(IAgent agent, BTBlackboard blackboard)
+    public override void PostTick(Node agent, BTBlackboard blackboard)
     {
         CurrentChild.PostTick(agent, blackboard);
     }
 
-    public override BTState Tick(IAgent agent, BTBlackboard blackboard)
+    public override BTState Tick(Node agent, BTBlackboard blackboard)
     {
         BTState etat = CurrentChild.Tick(agent, blackboard);
 

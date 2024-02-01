@@ -1,34 +1,13 @@
-using System;
-using System.Collections.Generic;
-using BehaviorTree;
 using Godot;
 
-public partial class Agent : CharacterBody2D, IAgent
+public partial class Agent : CharacterBody2D
 {
-	private Vector2 target;
-	private int speed = 400;
+	public Vector2 target;
+	public float speed = 100;
 
-	// Called every frame. 'delta' is the elapsed time since the previous frame.
-	public override void _Process(double delta)
-	{
-		Vector2 translation = (target - Position).Normalized();
-		Position += translation * (float) delta * speed;
-	}
-
-    public void executeAction(AgentActions action, KeyValuePair<string, Variant>[] args)
+    public override void _PhysicsProcess(double delta)
     {
-		switch(action){
-			case AgentActions.GO_TO:
-				foreach(KeyValuePair<string, Variant> arg in args){
-					if(arg.Key == "target"){
-						target = (Vector2) arg.Value;
-					}
-				}
-				break;
-			default:
-				GD.Print($"Pas d'instruction pour {action}");
-				break;
-		}
+		Velocity = (target - Position).Normalized() * speed;
+		MoveAndSlide();
     }
-
 }

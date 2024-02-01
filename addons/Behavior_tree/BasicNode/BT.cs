@@ -16,7 +16,7 @@ public partial class BT: BehaviourTree
     - faut un agent, une entité à laquelle il est lié
     */
 
-    private IAgent agent;
+    private Node agent;
     [Export]
     private NodePath agentPath;
 
@@ -32,17 +32,10 @@ public partial class BT: BehaviourTree
 
     public override void _Ready()
     {
-        var unknownA = GetNode(agentPath);
-
-        if(unknownA is IAgent a){
-            agent = a;
-            isActive = true;
-            root = GetChild<BTNode>(0);
-            blackboard = new BTBlackboard();
-        }
-        else{
-            throw new Exception("The agent node does not implement IAgent interface");
-        }
+        agent = GetNode(agentPath);
+        isActive = true;
+        blackboard = new BTBlackboard();
+        root = GetChild<BTNode>(0);
     }
 
     public override void _PhysicsProcess(double delta)

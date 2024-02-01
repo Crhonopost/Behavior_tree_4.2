@@ -6,7 +6,7 @@ public partial class UpdateMousePosition : BTLeaf
     [Export]
     private string mouseKey;
 
-    public override BTState Tick(IAgent agent, BTBlackboard blackboard)
+    public override BTState Tick(Node agent, BTBlackboard blackboard)
     {
       var mousePos = GetViewport().GetMousePosition();
 
