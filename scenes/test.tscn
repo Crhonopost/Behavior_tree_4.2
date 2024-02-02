@@ -1,14 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://c4wp48jp2b268"]
+[gd_scene load_steps=12 format=3 uid="uid://c4wp48jp2b268"]
 
 [ext_resource type="Texture2D" uid="uid://cibn47wikwgw5" path="res://icon.svg" id="1_k7ofh"]
 [ext_resource type="Script" path="res://addons/Behavior_tree/BasicNode/BT.cs" id="2_736a0"]
 [ext_resource type="Script" path="res://scripts/Agent.cs" id="2_qa8k5"]
-[ext_resource type="Script" path="res://addons/Behavior_tree/Decorators/BTRepeater.cs" id="3_7qp86"]
 [ext_resource type="Script" path="res://scripts/actions/GoToTarget.cs" id="4_0p0na"]
 [ext_resource type="Script" path="res://addons/Behavior_tree/Composites/BTSequence.cs" id="4_nx7gx"]
+[ext_resource type="Script" path="res://addons/Behavior_tree/Composites/BTSelector.cs" id="4_pf00g"]
 [ext_resource type="Script" path="res://scripts/actions/UpdateMousePosition.cs" id="6_fsclf"]
 [ext_resource type="Script" path="res://scripts/actions/LoadMousePosition.cs" id="7_i4x30"]
 [ext_resource type="Script" path="res://scripts/actions/IsMouseNear.cs" id="7_t6rp0"]
+[ext_resource type="Script" path="res://scripts/actions/TargetClosestShelter.cs" id="10_2ift6"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xgmpv"]
 size = Vector2(64, 58)
@@ -39,26 +40,42 @@ metadata/_edit_lock_ = true
 script = ExtResource("2_736a0")
 agentPath = NodePath("../CharacterBody2D")
 
-[node name="BTRepeater" type="Node" parent="BT"]
-script = ExtResource("3_7qp86")
+[node name="BTSelector" type="Node" parent="BT"]
+script = ExtResource("4_pf00g")
 
-[node name="FollowMouse" type="Node" parent="BT/BTRepeater"]
+[node name="FollowMouse" type="Node" parent="BT/BTSelector"]
 script = ExtResource("4_nx7gx")
 
-[node name="UpdateMousePosition" type="Node" parent="BT/BTRepeater/FollowMouse"]
+[node name="UpdateMousePosition" type="Node" parent="BT/BTSelector/FollowMouse"]
 script = ExtResource("6_fsclf")
 mouseKey = "mouse"
 
-[node name="IsMouseNear" type="Node" parent="BT/BTRepeater/FollowMouse"]
+[node name="IsMouseNear" type="Node" parent="BT/BTSelector/FollowMouse"]
 script = ExtResource("7_t6rp0")
 mouseKey = "mouse"
 radius = 500.0
 
-[node name="LoadMousePosition" type="Node" parent="BT/BTRepeater/FollowMouse"]
+[node name="LoadMousePosition" type="Node" parent="BT/BTSelector/FollowMouse"]
 script = ExtResource("7_i4x30")
 targetKey = "target"
 mouseKey = "mouse"
 
-[node name="GoToTarget" type="Node" parent="BT/BTRepeater/FollowMouse"]
+[node name="GoToTarget" type="Node" parent="BT/BTSelector/FollowMouse"]
+script = ExtResource("4_0p0na")
+targetKey = "target"
+
+[node name="BTSequence" type="Node" parent="BT/BTSelector"]
+script = ExtResource("4_nx7gx")
+
+[node name="UpdateMousePosition" type="Node" parent="BT/BTSelector/BTSequence"]
+script = ExtResource("6_fsclf")
+mouseKey = "mouse"
+
+[node name="TargetClosestShelter" type="Node" parent="BT/BTSelector/BTSequence"]
+script = ExtResource("10_2ift6")
+shelterLocationKey = "shelter"
+targetKey = "target"
+
+[node name="GoToTarget" type="Node" parent="BT/BTSelector/BTSequence"]
 script = ExtResource("4_0p0na")
 targetKey = "target"

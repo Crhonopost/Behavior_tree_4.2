@@ -1,3 +1,4 @@
+using System;
 using Godot;
 
 namespace BehaviorTree;
@@ -6,19 +7,34 @@ namespace BehaviorTree;
 public partial class BTComposite : BTNode
 {
     private Godot.Collections.Array<BTNode> childs;
-    private BTNode _currentChild;
-    public BTNode CurrentChild{get;set;}
+
+    private int currentChildIndex = 0;
+    public BTNode CurrentChild{
+        get {
+            try {
+                return childs[currentChildIndex];
+            } catch(IndexOutOfRangeException e){
+                throw e;
+            }
+        }
+    }
 
     public virtual void reset(){
-        CurrentChild = getChilds()[0];
+        currentChildIndex = 0;
     }
 
     public bool HasNext(){
-        return getChilds().IndexOf(CurrentChild) < getChilds().Count - 1;
+        return currentChildIndex + 1 < childs.Count;
     }
 
     public BTNode Next(){
-        return getChilds()[getChilds().IndexOf(CurrentChild) + 1];
+        try {
+            var result = childs[currentChildIndex];
+            currentChildIndex += 1;
+            return result;
+        } catch(IndexOutOfRangeException e){
+            throw e;
+        }
     }
 
     public override void _Ready()
@@ -27,13 +43,5 @@ public partial class BTComposite : BTNode
         foreach(BTNode c in GetChildren()){
             childs.Add(c);
         }
-    }
-
-    public Godot.Collections.Array<BTNode> getChilds(){
-        return childs;
-    }
-
-    public void setChilds(Godot.Collections.Array<BTNode> cs){
-        childs = cs;
     }
 }
