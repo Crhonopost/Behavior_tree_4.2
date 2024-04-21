@@ -41,9 +41,7 @@ public partial class BT: BehaviourTree
     public override void _PhysicsProcess(double delta)
     {
         if(isActive){
-            root.PreTick(agent, blackboard);
             root.Tick(agent, blackboard);
-            root.PostTick(agent, blackboard);
         }
     }
 }

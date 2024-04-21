@@ -23,10 +23,10 @@ namespace BehaviorTree;
 [GlobalClass, Icon("res://addons/Behavior_tree/Icons/BTNode.png")]
 public abstract partial class BTNode: BehaviourTree
 {
-    public virtual void PreTick(Node agent, BTBlackboard blackboard){} // appellée avant Tick() 
+    // public virtual void PreTick(Node agent, BTBlackboard blackboard){} // appellée avant Tick() 
     public virtual BTState Tick(Node agent, BTBlackboard blackboard){ // manque le blackboard
         return BTState.FAILURE;
     }
 
-    public virtual void PostTick(Node agent, BTBlackboard blackboard){}// appellée apres Tick()
+    // public virtual void PostTick(Node agent, BTBlackboard blackboard){}// appellée apres Tick()
 }
