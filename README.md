@@ -24,4 +24,6 @@ It is interesting to use the blackboard provided in function calls to transfer a
 
 The scene 'Demo1' implements a very simple behavior tree. The AI tries to reach the mouse within a certain radius. If the mouse is too far, the AI returns to its shelter.
 
+[Link to previous implemtentation for Godot 3.5](https://github.com/Crhonopost/behavior-tree)
+
 # Assets made by [Cupnooble](https://cupnooble.itch.io/)
