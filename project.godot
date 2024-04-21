@@ -21,3 +21,7 @@ project/assembly_name="behavior_tree_4.2"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/Behavior_tree/plugin.cfg")
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=0

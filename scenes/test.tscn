@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c4wp48jp2b268"]
+[gd_scene load_steps=13 format=3 uid="uid://c4wp48jp2b268"]
 
 [ext_resource type="Texture2D" uid="uid://cibn47wikwgw5" path="res://icon.svg" id="1_k7ofh"]
 [ext_resource type="Script" path="res://addons/Behavior_tree/BasicNode/BT.cs" id="2_736a0"]
@@ -11,20 +11,60 @@
 [ext_resource type="Script" path="res://scripts/actions/IsMouseNear.cs" id="7_t6rp0"]
 [ext_resource type="Script" path="res://scripts/actions/TargetClosestShelter.cs" id="10_2ift6"]
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_qgosf"]
+vertices = PackedVector2Array(1141, 12, 1143, 639, 829, 232, 767, 92, 741, 384, 11, 634, 725, 377, 766, 228, 8, 13, 560, 130, 560, 112, 729, 148)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3), PackedInt32Array(4, 2, 1), PackedInt32Array(4, 1, 5, 6), PackedInt32Array(7, 6, 5, 8, 9), PackedInt32Array(8, 0, 3, 10), PackedInt32Array(8, 10, 9), PackedInt32Array(7, 9, 11)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-2, 4, 2, 644, 1154, 650, 1151, 2), PackedVector2Array(736, 139, 570, 121, 761, 103, 818, 231, 737, 371, 777, 229)])
+source_geometry_group_name = &"navigation_polygon_source_group"
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xgmpv"]
 size = Vector2(64, 58)
 
 [node name="test" type="Node2D"]
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
-script = ExtResource("2_qa8k5")
+[node name="BT" type="Node" parent="."]
+script = ExtResource("2_736a0")
+agentPath = NodePath("../CharacterBody2D")
 
-[node name="Agent" type="Sprite2D" parent="CharacterBody2D"]
-scale = Vector2(0.492188, 0.453125)
-texture = ExtResource("1_k7ofh")
+[node name="Main" type="Node" parent="BT"]
+script = ExtResource("4_pf00g")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-shape = SubResource("RectangleShape2D_xgmpv")
+[node name="FollowMouse" type="Node" parent="BT/Main"]
+script = ExtResource("4_nx7gx")
+
+[node name="UpdateMousePosition" type="Node" parent="BT/Main/FollowMouse"]
+script = ExtResource("6_fsclf")
+mouseKey = "mouse"
+
+[node name="IsMouseNear" type="Node" parent="BT/Main/FollowMouse"]
+script = ExtResource("7_t6rp0")
+mouseKey = "mouse"
+radius = 500.0
+
+[node name="LoadMousePosition" type="Node" parent="BT/Main/FollowMouse"]
+script = ExtResource("7_i4x30")
+targetKey = "target"
+mouseKey = "mouse"
+
+[node name="GoToTarget" type="Node" parent="BT/Main/FollowMouse"]
+script = ExtResource("4_0p0na")
+targetKey = "target"
+
+[node name="GoHome" type="Node" parent="BT/Main"]
+script = ExtResource("4_nx7gx")
+
+[node name="UpdateMousePosition" type="Node" parent="BT/Main/GoHome"]
+script = ExtResource("6_fsclf")
+mouseKey = "mouse"
+
+[node name="TargetClosestShelter" type="Node" parent="BT/Main/GoHome"]
+script = ExtResource("10_2ift6")
+shelterLocationKey = "shelter"
+targetKey = "target"
+
+[node name="GoToTarget" type="Node" parent="BT/Main/GoHome"]
+script = ExtResource("4_0p0na")
+targetKey = "target"
 
 [node name="Shelter" type="Node2D" parent="." groups=["shelter"]]
 position = Vector2(532, 211)
@@ -36,46 +76,20 @@ offset_right = 21.0
 offset_bottom = 21.0
 metadata/_edit_lock_ = true
 
-[node name="BT" type="Node" parent="."]
-script = ExtResource("2_736a0")
-agentPath = NodePath("../CharacterBody2D")
+[node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+navigation_polygon = SubResource("NavigationPolygon_qgosf")
 
-[node name="BTSelector" type="Node" parent="BT"]
-script = ExtResource("4_pf00g")
+[node name="CharacterBody2D" type="CharacterBody2D" parent="." node_paths=PackedStringArray("navAgent")]
+position = Vector2(171, 313)
+script = ExtResource("2_qa8k5")
+navAgent = NodePath("NavigationAgent2D")
+metadata/_edit_group_ = true
 
-[node name="FollowMouse" type="Node" parent="BT/BTSelector"]
-script = ExtResource("4_nx7gx")
+[node name="Agent" type="Sprite2D" parent="CharacterBody2D"]
+scale = Vector2(0.492188, 0.453125)
+texture = ExtResource("1_k7ofh")
 
-[node name="UpdateMousePosition" type="Node" parent="BT/BTSelector/FollowMouse"]
-script = ExtResource("6_fsclf")
-mouseKey = "mouse"
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_xgmpv")
 
-[node name="IsMouseNear" type="Node" parent="BT/BTSelector/FollowMouse"]
-script = ExtResource("7_t6rp0")
-mouseKey = "mouse"
-radius = 500.0
-
-[node name="LoadMousePosition" type="Node" parent="BT/BTSelector/FollowMouse"]
-script = ExtResource("7_i4x30")
-targetKey = "target"
-mouseKey = "mouse"
-
-[node name="GoToTarget" type="Node" parent="BT/BTSelector/FollowMouse"]
-script = ExtResource("4_0p0na")
-targetKey = "target"
-
-[node name="BTSequence" type="Node" parent="BT/BTSelector"]
-script = ExtResource("4_nx7gx")
-
-[node name="UpdateMousePosition" type="Node" parent="BT/BTSelector/BTSequence"]
-script = ExtResource("6_fsclf")
-mouseKey = "mouse"
-
-[node name="TargetClosestShelter" type="Node" parent="BT/BTSelector/BTSequence"]
-script = ExtResource("10_2ift6")
-shelterLocationKey = "shelter"
-targetKey = "target"
-
-[node name="GoToTarget" type="Node" parent="BT/BTSelector/BTSequence"]
-script = ExtResource("4_0p0na")
-targetKey = "target"
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="CharacterBody2D"]

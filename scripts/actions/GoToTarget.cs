@@ -10,7 +10,7 @@ public partial class GoToTarget : BTLeaf
     public override BTState Tick(Node agent, BTBlackboard blackboard)
     {
         if(agent is Agent character){
-            character.target = (Vector2) blackboard.getValue(targetKey);
+            character.Target = (Vector2) blackboard.getValue(targetKey);
         }
         
         return BTState.SUCCESS;
